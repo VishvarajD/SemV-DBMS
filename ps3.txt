@@ -1,0 +1,176 @@
+Problem Statement: Design following SQL DML statements:
+Create a university/college database containing following tables-dept,instructor,teaches,student.
+dept(ins_id ,deptnm,budget)
+instructor(inst_id,deptnm,salary,name,raise)
+student(stud_id,deptnm,sem,name,yr,creadits)
+teaches(inst_id,course,sem,yr)
+a) Insert records into all tables.
+b) Find the avg salary of each department use group by clause.
+c) Find the department that has highest or average salary
+d) Delete the records of all instructors with salary below 2000.
+
+
+
+
+
+use ddl;
+Database changed
+mysql> create table dept(ins_id int primary key,deptnm varchar(50),budget int);
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> desc dept;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| ins_id | int         | NO   | PRI | NULL    |       |
+| deptnm | varchar(50) | YES  |     | NULL    |       |
+| budget | int         | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> create table instructor(inst_id int primary key,deptnm varchar(50),salary int,name varchar(50),raise int );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> desc instructor;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| inst_id | int         | NO   | PRI | NULL    |       |
+| deptnm  | varchar(50) | YES  |     | NULL    |       |
+| salary  | int         | YES  |     | NULL    |       |
+| name    | varchar(50) | YES  |     | NULL    |       |
+| raise   | int         | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> create table student(stud_id int primary key,deptnm varchar(50),sem int,name varchar(50),yr int ,creadits int);
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> desc student;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| stud_id  | int         | NO   | PRI | NULL    |       |
+| deptnm   | varchar(50) | YES  |     | NULL    |       |
+| sem      | int         | YES  |     | NULL    |       |
+| name     | varchar(50) | YES  |     | NULL    |       |
+| yr       | int         | YES  |     | NULL    |       |
+| creadits | int         | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> create table teaches(inst_id int primary key ,course varchar(50),sem int,yr int);
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> desc teaches;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| inst_id | int         | NO   | PRI | NULL    |       |
+| course  | varchar(50) | YES  |     | NULL    |       |
+| sem     | int         | YES  |     | NULL    |       |
+| yr      | int         | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> insert into dept values(101, "First year"),(201,"Mech"),(301,"Civil"),(401,"GodComp"),("501","IT");
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> insert into dept values(101, "First year",50),(201,"Mech",20),(301,"Civil",10),(401,"GodComp",3000),("501","IT",12);
+Query OK, 5 rows affected (0.04 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from dept;
++--------+------------+--------+
+| ins_id | deptnm     | budget |
++--------+------------+--------+
+|    101 | First year |     50 |
+|    201 | Mech       |     20 |
+|    301 | Civil      |     10 |
+|    401 | GodComp    |   3000 |
+|    501 | IT         |     12 |
++--------+------------+--------+
+5 rows in set (0.00 sec)
+
+mysql> insert into student values(01,"Mech",5,"Achut",3,23),(08,"Comp",3,"Vish",2,32),(12,"Civil",4,"RandomAss",6,44);
+Query OK, 3 rows affected (0.04 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from student;
++---------+--------+------+-----------+------+----------+
+| stud_id | deptnm | sem  | name      | yr   | creadits |
++---------+--------+------+-----------+------+----------+
+|       1 | Mech   |    5 | Achut     |    3 |       23 |
+|       8 | Comp   |    3 | Vish      |    2 |       32 |
+|      12 | Civil  |    4 | RandomAss |    6 |       44 |
++---------+--------+------+-----------+------+----------+
+3 rows in set (0.00 sec)
+
+mysql> insert into instructor values (101,"First Year",30000,"Dina",2000),(201,"Comp",4000,"Lana",200),(301,"Civil",4020,"Agu",230),(241,"Comp",45000,"KLana
+",200),(331,"Civil",40240,"PAgu",230);
+Query OK, 5 rows affected (0.04 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from instructor;
++---------+------------+--------+-------+-------+
+| inst_id | deptnm     | salary | name  | raise |
++---------+------------+--------+-------+-------+
+|     101 | First Year |  30000 | Dina  |  2000 |
+|     201 | Comp       |   4000 | Lana  |   200 |
+|     241 | Comp       |  45000 | KLana |   200 |
+|     301 | Civil      |   4020 | Agu   |   230 |
+|     331 | Civil      |  40240 | PAgu  |   230 |
++---------+------------+--------+-------+-------+
+5 rows in set (0.00 sec)
+
+mysql> insert into teaches values (101,"DSA",3,2),(201,"KOC",5,3),(401,"LPP",4,2);
+Query OK, 3 rows affected (0.04 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from teaches;
++---------+--------+------+------+
+| inst_id | course | sem  | yr   |
++---------+--------+------+------+
+|     101 | DSA    |    3 |    2 |
+|     201 | KOC    |    5 |    3 |
+|     401 | LPP    |    4 |    2 |
++---------+--------+------+------+
+3 rows in set (0.00 sec)
+
+mysql> select deptnm,avg(salary) as avg from instructor group by deptnm;
++------------+------------+
+| deptnm     | avg        |
++------------+------------+
+| First Year | 30000.0000 |
+| Comp       | 24500.0000 |
+| Civil      | 22130.0000 |
++------------+------------+
+3 rows in set (0.00 sec)
+
+mysql> select deptnm,avg(salary) as avg from instructor group by deptnm order by avg limit 1;
++--------+------------+
+| deptnm | avg        |
++--------+------------+
+| Civil  | 22130.0000 |
++--------+------------+
+1 row in set (0.00 sec)
+
+mysql> select deptnm,avg(salary) as avg from instructor group by deptnm order by avg desc limit 1;
++------------+------------+
+| deptnm     | avg        |
++------------+------------+
+| First Year | 30000.0000 |
++------------+------------+
+1 row in set (0.00 sec)
+
+mysql> delete from instructor where salary < 5000;
+Query OK, 2 rows affected (0.04 sec)
+
+mysql> select * from instructor;
++---------+------------+--------+-------+-------+
+| inst_id | deptnm     | salary | name  | raise |
++---------+------------+--------+-------+-------+
+|     101 | First Year |  30000 | Dina  |  2000 |
+|     241 | Comp       |  45000 | KLana |   200 |
+|     331 | Civil      |  40240 | PAgu  |   230 |
++---------+------------+--------+-------+-------+
+3 rows in set (0.00 sec)

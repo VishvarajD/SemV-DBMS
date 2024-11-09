@@ -1,0 +1,82 @@
+Problem Statement
+PL/SQL code block: Use of Control structure and Exception handling is mandatory. Write a PL/SQL block of code for the following requirements:- 
+Schema: 
+1. Borrower(Rollin, Name, DateofIssue, NameofBook, Status) 
+2. Fine(Roll_no,Date,Amt) 
+• Accept roll_no & name of book from user. 
+• Check the number of days (from date of issue), if days are between 15 to 30 then fine amount will be Rs 5per day. 
+• If no. of days>30, per day fine will be Rs 50 per day & for days less than 30, Rs. 5 per day. 
+• After submitting the book, status will change from I to R. 
+
+
+
+create table Borrower(Rollno int primary key, Name varchar(50), DateofIssue date, NameofBook varchar(50), Status varchar(10));
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> desc Borrower;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| Rollno      | int         | NO   | PRI | NULL    |       |
+| Name        | varchar(50) | YES  |     | NULL    |       |
+| DateofIssue | date        | YES  |     | NULL    |       |
+| NameofBook  | varchar(50) | YES  |     | NULL    |       |
+| Status      | varchar(10) | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> create table Fine(Roll_no int primary key,Date date,Amt int);
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> desc Fine;
++---------+------+------+-----+---------+-------+
+| Field   | Type | Null | Key | Default | Extra |
++---------+------+------+-----+---------+-------+
+| Roll_no | int  | NO   | PRI | NULL    |       |
+| Date    | date | YES  |     | NULL    |       |
+| Amt     | int  | YES  |     | NULL    |       |
++---------+------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> delimiter #
+mysql> create procedure callingFine(in roll int , in name varchar(50))
+    -> begin
+    -> declare d date;
+    -> declare diff int;
+    -> declare fineAmt int ;
+    -> select  DateofIssue into d from Borrower where Rollno=roll && NameOfBook = name;
+    -> select datediff(curdate(),d) into diff;
+    -> if(diff>15 && diff<30)
+    -> then set fineAmt = 5 * diff;
+    -> insert into Fine values(roll,d,fineAmt);
+    -> elseif(diff > 30)
+    -> then set fineAmt = 50*diff;
+    -> insert into Fine values (roll,d,fineAmt);
+    ->
+    -> end if;
+    -> update Borrower set status = 'R' where Rollno = roll;
+    -> end #
+Query OK, 0 rows affected, 2 warnings (0.04 sec)
+
+mysql> delimiter ;
+mysql> call callingFine(1,"50 Shades");
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> call callingFine(2,"50 Shades");
+ERROR 1062 (23000): Duplicate entry '2' for key 'fine.PRIMARY'
+mysql> call callingFine(4,"Animal");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> call callingFine(5,"champak");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from Fine;
++---------+------------+------+
+| Roll_no | Date       | Amt  |
++---------+------------+------+
+|       2 | 2024-10-11 |  145 |
+|       5 | 2024-09-12 | 2900 |
++---------+------------+------+
+2 rows in set (0.00 sec)
+
+mysql>

@@ -1,0 +1,100 @@
+Problem Statement: Design and Develop SQL DDL statements on Schema given.
+Schema:
+employee_master (first name,middle,last name,department,manager id.)
+branch_master (branch id ,branch name)
+a)Insert records in branch_master
+b)Insert records in employee_master.
+c)Create index on emp_name column of employee_master.
+d)Create a view containing employee details 
+call
+
+
+mysql> create database ddl;
+Query OK, 1 row affected (0.05 sec)
+
+mysql> create table employee_master (f_name varchar(50) not null,m_name varchar(50),lname varchar(50),department varchar(50),manager_id int );
+ERROR 1046 (3D000): No database selected
+mysql> use ddl;
+Database changed
+mysql> create table employee_master (f_name varchar(50) not null,m_name varchar(50),lname varchar(50),department varchar(50),manager_id int );
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> desc employee_master;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| f_name     | varchar(50) | NO   |     | NULL    |       |
+| m_name     | varchar(50) | YES  |     | NULL    |       |
+| lname      | varchar(50) | YES  |     | NULL    |       |
+| department | varchar(50) | YES  |     | NULL    |       |
+| manager_id | int         | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> create table branch_master (branch_id int not null,branch_name varchar(50));
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> desc branch_master;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| branch_id   | int         | NO   |     | NULL    |       |
+| branch_name | varchar(50) | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> insert into employee_master values ("Vishvaraj","Dnyaneshwar","Deshmukh" , "Computer", 69),("Sanidhya","zz","Tilekar","Computer",34),("Sarthak","zz",
+"Band","ENTC",12);
+Query OK, 3 rows affected (0.04 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee_master;
++-----------+-------------+----------+------------+------------+
+| f_name    | m_name      | lname    | department | manager_id |
++-----------+-------------+----------+------------+------------+
+| Vishvaraj | Dnyaneshwar | Deshmukh | Computer   |         69 |
+| Sanidhya  | zz          | Tilekar  | Computer   |         34 |
+| Sarthak   | zz          | Band     | ENTC       |         12 |
++-----------+-------------+----------+------------+------------+
+3 rows in set (0.00 sec)
+
+mysql> insert into branch_master values(401,"COMP"),(501,"IT"),(601,"ENTC");
+Query OK, 3 rows affected (0.04 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from branch_master;
++-----------+-------------+
+| branch_id | branch_name |
++-----------+-------------+
+|       401 | COMP        |
+|       501 | IT          |
+|       601 | ENTC        |
++-----------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> create index name_index on employee_master(f_name);
+Query OK, 0 rows affected (0.09 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> show index from employee_master;
++-----------------+------------+------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| Table           | Non_unique | Key_name   | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment | Visible | Expression |
++-----------------+------------+------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| employee_master |          1 | name_index |            1 | f_name      | A         |           3 |     NULL |   NULL |      | BTREE      |         |               | YES     | NULL       |
++-----------------+------------+------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+1 row in set (0.04 sec)
+
+mysql> create view employee_details as select * from employee_master;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> select * from employee_details;
++-----------+-------------+----------+------------+------------+
+| f_name    | m_name      | lname    | department | manager_id |
++-----------+-------------+----------+------------+------------+
+| Vishvaraj | Dnyaneshwar | Deshmukh | Computer   |         69 |
+| Sanidhya  | zz          | Tilekar  | Computer   |         34 |
+| Sarthak   | zz          | Band     | ENTC       |         12 |
++-----------+-------------+----------+------------+------------+
+3 rows in set (0.00 sec)
+
+mysql>
