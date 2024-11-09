@@ -1,0 +1,139 @@
+Problem Statement
+Design at least 10 SQL queries for suitable database application using SQL DML statements: all types of Join, View.
+
+
+
+
+ use ddl;
+Database changed
+mysql> create table student(id int primary key ,name varchar(50),dept varchar(50),credits int ,back int);
+ERROR 1050 (42S01): Table 'student' already exists
+mysql>
+mysql> create database;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> create database new;
+Query OK, 1 row affected (0.04 sec)
+
+mysql> use new;
+Database changed
+mysql> create table student(id int primary key ,name varchar(50),dept varchar(50),credits int ,back int);
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> desc student;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| id      | int         | NO   | PRI | NULL    |       |
+| name    | varchar(50) | YES  |     | NULL    |       |
+| dept    | varchar(50) | YES  |     | NULL    |       |
+| credits | int         | YES  |     | NULL    |       |
+| back    | int         | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> alter table student add dept_id int not null;
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc student;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| id      | int         | NO   | PRI | NULL    |       |
+| name    | varchar(50) | YES  |     | NULL    |       |
+| dept    | varchar(50) | YES  |     | NULL    |       |
+| credits | int         | YES  |     | NULL    |       |
+| back    | int         | YES  |     | NULL    |       |
+| dept_id | int         | NO   |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+mysql> create table dept (dept_id int, name varchar(50));
+Query OK, 0 rows affected (0.07 sec)
+
+ insert into student values(12,"Vishvaraj","Comp",33,3,401),(33,"azzzxc","IT",34,1,501),(44,"dfdfvf","ENTC",33,4,601);
+Query OK, 3 rows affected (0.04 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from student;
++----+-----------+------+---------+------+---------+
+| id | name      | dept | credits | back | dept_id |
++----+-----------+------+---------+------+---------+
+| 12 | Vishvaraj | Comp |      33 |    3 |     401 |
+| 33 | azzzxc    | IT   |      34 |    1 |     501 |
+| 44 | dfdfvf    | ENTC |      33 |    4 |     601 |
++----+-----------+------+---------+------+---------+
+3 rows in set (0.00 sec)
+
+mysql> desc dept;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| dept_id | int         | YES  |     | NULL    |       |
+| name    | varchar(50) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> insert into dept values(401,"Computer"),(501,"IT"),(601,"EMTC");
+Query OK, 3 rows affected (0.04 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+ insert into dept values (101,"First");
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from student s inner join dept d on s.dept_id = d.dept_id;
++----+-----------+------+---------+------+---------+---------+----------+
+| id | name      | dept | credits | back | dept_id | dept_id | name     |
++----+-----------+------+---------+------+---------+---------+----------+
+| 45 | assdsd    | Comp |      44 |    5 |     401 |     401 | Computer |
+| 12 | Vishvaraj | Comp |      33 |    3 |     401 |     401 | Computer |
+| 33 | azzzxc    | IT   |      34 |    1 |     501 |     501 | IT       |
+| 44 | dfdfvf    | ENTC |      33 |    4 |     601 |     601 | EMTC     |
++----+-----------+------+---------+------+---------+---------+----------+
+4 rows in set (0.00 sec)
+
+mysql> select * from student s left join dept d on s.dept_id = d.dept_id;
++----+-----------+------+---------+------+---------+---------+----------+
+| id | name      | dept | credits | back | dept_id | dept_id | name     |
++----+-----------+------+---------+------+---------+---------+----------+
+| 12 | Vishvaraj | Comp |      33 |    3 |     401 |     401 | Computer |
+| 33 | azzzxc    | IT   |      34 |    1 |     501 |     501 | IT       |
+| 44 | dfdfvf    | ENTC |      33 |    4 |     601 |     601 | EMTC     |
+| 45 | assdsd    | Comp |      44 |    5 |     401 |     401 | Computer |
++----+-----------+------+---------+------+---------+---------+----------+
+4 rows in set (0.00 sec)
+
+mysql> select * from student s left outer join dept d on s.dept_id = d.dept_id;
++----+-----------+------+---------+------+---------+---------+----------+
+| id | name      | dept | credits | back | dept_id | dept_id | name     |
++----+-----------+------+---------+------+---------+---------+----------+
+| 12 | Vishvaraj | Comp |      33 |    3 |     401 |     401 | Computer |
+| 33 | azzzxc    | IT   |      34 |    1 |     501 |     501 | IT       |
+| 44 | dfdfvf    | ENTC |      33 |    4 |     601 |     601 | EMTC     |
+| 45 | assdsd    | Comp |      44 |    5 |     401 |     401 | Computer |
++----+-----------+------+---------+------+---------+---------+----------+
+4 rows in set (0.00 sec)
+
+mysql> select * from student s right outer join dept d on s.dept_id = d.dept_id;
++------+-----------+------+---------+------+---------+---------+----------+
+| id   | name      | dept | credits | back | dept_id | dept_id | name     |
++------+-----------+------+---------+------+---------+---------+----------+
+|   45 | assdsd    | Comp |      44 |    5 |     401 |     401 | Computer |
+|   12 | Vishvaraj | Comp |      33 |    3 |     401 |     401 | Computer |
+|   33 | azzzxc    | IT   |      34 |    1 |     501 |     501 | IT       |
+|   44 | dfdfvf    | ENTC |      33 |    4 |     601 |     601 | EMTC     |
+| NULL | NULL      | NULL |    NULL | NULL |    NULL |     101 | First    |
++------+-----------+------+---------+------+---------+---------+----------+
+5 rows in set (0.00 sec)
+
+mysql> select * from student s cross join dept d on s.dept_id = d.dept_id;
++----+-----------+------+---------+------+---------+---------+----------+
+| id | name      | dept | credits | back | dept_id | dept_id | name     |
++----+-----------+------+---------+------+---------+---------+----------+
+| 45 | assdsd    | Comp |      44 |    5 |     401 |     401 | Computer |
+| 12 | Vishvaraj | Comp |      33 |    3 |     401 |     401 | Computer |
+| 33 | azzzxc    | IT   |      34 |    1 |     501 |     501 | IT       |
+| 44 | dfdfvf    | ENTC |      33 |    4 |     601 |     601 | EMTC     |
++----+-----------+------+---------+------+---------+---------+----------+
+4 rows in set (0.00 sec)
+
+mysql>
