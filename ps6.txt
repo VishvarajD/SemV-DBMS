@@ -1,0 +1,8 @@
+DBMSL_Exp11> var mapper1 = function(){emit(this.CustomerID,this.Amount)}
+
+DBMSL_Exp11> var reducer1 = function(keyCustomerID, valuesAmount) {return Array.sum(valuesAmount)}
+
+DBMSL_Exp11> db.Orders.mapReduce(mapper1, reducer1, {out: "SumOfAmounts"})
+{ result: 'Map_Reduce', ok: 1 }
+
+DBMSL_Exp11> db.SumOfAmounts.find()

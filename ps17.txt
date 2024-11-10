@@ -1,0 +1,83 @@
+ use zx;
+Database changed
+mysql> create table students (id int primary key , name varchar(50));
+Query OK, 0 rows affected (1.68 sec)
+
+mysql> alter students add marks int;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'students add marks int' at line 1
+mysql> alter table students add marks int;
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc students;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| id    | int         | NO   | PRI | NULL    |       |
+| name  | varchar(50) | YES  |     | NULL    |       |
+| marks | int         | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.04 sec)
+
+mysql> insert into students values (18,"Vishvaraj",22),(6,"Sanidhya",45),(12,"Sarthak",56);
+Query OK, 3 rows affected (0.04 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from students;
++----+-----------+-------+
+| id | name      | marks |
++----+-----------+-------+
+|  6 | Sanidhya  |    45 |
+| 12 | Sarthak   |    56 |
+| 18 | Vishvaraj |    22 |
++----+-----------+-------+
+3 rows in set (0.00 sec)
+
+mysql> delimiter #
+mysql> create procedure getName (in std_id int,out std_name varchar(50))
+    -> begin
+    -> select name from students where id = std_id;
+    -> end #
+Query OK, 0 rows affected (0.01 sec)
+
+mysql>
+mysql> getName(6);
+    -> ^C
+mysql> call getName(6);
+    -> ^C
+mysql> delimiter ;
+mysql> call getName(6);
+ERROR 1318 (42000): Incorrect number of arguments for PROCEDURE zx.getName; expected 2, got 1
+mysql> delimiter #
+mysql> create procedure getName1(in std_id int)
+    -> begin
+    -> select name from students where id = std_id;
+    -> end #
+Query OK, 0 rows affected (0.06 sec)
+
+mysql>
+mysql>
+mysql> delimiter ;
+mysql> call getName1(6);
++----------+
+| name     |
++----------+
+| Sanidhya |
++----------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> call getName(18);
+ERROR 1318 (42000): Incorrect number of arguments for PROCEDURE zx.getName; expected 2, got 1
+mysql> call getName1(18);
++-----------+
+| name      |
++-----------+
+| Vishvaraj |
++-----------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+mysql>
