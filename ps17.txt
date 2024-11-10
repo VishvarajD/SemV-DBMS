@@ -1,3 +1,43 @@
+
+delimiter #
+create procedure getName(in std_id int)
+begin 
+select name from student where id = std_id;
+end #
+
+delimiter ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+===============================================================
+
+
+
+
+
  use zx;
 Database changed
 mysql> create table students (id int primary key , name varchar(50));
