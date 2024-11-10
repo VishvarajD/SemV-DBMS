@@ -17,3 +17,4 @@ DBMSL_Exp11> db.Orders.mapReduce(mapper2, reducer2, {out: "MinimumOrderAmount"})
 
 DBMSL_Exp11> db.MinimumOrderAmount.find()
 
+==========================
