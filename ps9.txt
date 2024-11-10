@@ -10,6 +10,53 @@ Schema:
 
 
 
+========================================================================
+
+delimiter #
+create procedure check_fine(in r int ,in b_name varchar(50))
+begin 
+declare d date;
+declare margin int;
+declare fine_amount int ;
+select DateofIssue into d from b where roll = r;
+select datediff(curdate(),d) into margin;
+if(margin>15 )and ( margin <30) then set fine_amount = 5*margin;
+insert into fine values (r,d,fine_amount);
+
+elseif(margin >30) then set fine_amount = 50 * margin;
+insert into fine values (r,d,fine_amount);
+end if ;
+update b set Status = "R" where roll = r;
+end #
+delimiter ;
+
+
+
+
+
+=======================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 create table Borrower(Rollno int primary key, Name varchar(50), DateofIssue date, NameofBook varchar(50), Status varchar(10));
 Query OK, 0 rows affected (0.07 sec)
 

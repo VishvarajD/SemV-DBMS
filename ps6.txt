@@ -6,3 +6,14 @@ DBMSL_Exp11> db.Orders.mapReduce(mapper1, reducer1, {out: "SumOfAmounts"})
 { result: 'Map_Reduce', ok: 1 }
 
 DBMSL_Exp11> db.SumOfAmounts.find()
+
+
+DBMSL_Exp11> var mapper2 = function(){emit(this.CustomerID,this.Amount)}
+
+DBMSL_Exp11> var reducer2 = function(keyCustomerID, valuesAmount) {return Math.min.apply(Math, valuesAmount)}
+
+DBMSL_Exp11> db.Orders.mapReduce(mapper2, reducer2, {out: "MinimumOrderAmount"})
+{ result: 'MinimumOrderAmount', ok: 1 }
+
+DBMSL_Exp11> db.MinimumOrderAmount.find()
+
