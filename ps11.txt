@@ -1,0 +1,23 @@
+delimiter #
+create procedure proc_Grade(in rollno int)
+begin 
+declare marks int;
+declare stdname varchar(50);
+declare grade varchar(50);
+select name,total_marks into stdname,marks from s where roll = rollno;
+ IF marks <= 1500 AND marks >= 990 THEN
+        SET Grade = 'DIST';
+    ELSEIF marks <= 989 AND marks >= 900 THEN
+        SET Grade = 'FC';
+    ELSEIF marks <= 899 AND marks >= 825 THEN
+        SET Grade = 'HSC';
+    ELSEIF marks <= 824 AND marks >= 750 THEN
+        SET Grade = 'SC';
+    ELSEIF marks <= 749 AND marks >= 650 THEN
+        SET Grade = 'PC';
+    ELSE
+        SET Grade = 'FAIL';
+    END IF;
+insert into r values(rollno,marks,grade);
+end#
+delimiter ;
