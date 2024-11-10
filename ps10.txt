@@ -1,0 +1,14 @@
+create two tables with same parameter
+
+delimiter #
+create procedure curse(in roll_in int)
+begin
+declare exit_lopp boolean;
+declare c1 cursor for select Rollno from table where Rollno = roll_in;
+declare continue handler for not found set exit_loop = TRUE;
+open c1;
+fetch c1 into roll_in;
+if not exist (select * from table2 where rollno = roll_in) then 
+insert into table2 select * from table where rollno = roll_in;
+end if;
+close c1;
