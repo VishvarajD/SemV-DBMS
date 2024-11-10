@@ -1,0 +1,18 @@
+delimiter #
+create trigger onUpdate 
+before update on library for each row 
+begin
+declare operation varchar(50);
+set operation = "updated";
+insert into library_audit values (old.id,old.name,old.author,old.numberOfCopies,operation);
+end #
+
+create trigger onDelete
+before delete on library for each row 
+begin
+declare operation varchar(50);
+set operation = "deleted";
+insert into library_audit values (old.id,old.name,old.author,old.numberOfCopies,operation);
+end #
+
+delimiter ;
