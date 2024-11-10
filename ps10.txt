@@ -12,3 +12,4 @@ if not exist (select * from table2 where rollno = roll_in) then
 insert into table2 select * from table where rollno = roll_in;
 end if;
 close c1;
+ =================
